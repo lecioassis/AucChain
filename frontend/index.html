@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blind Auction DApp</title>
+    <script src="https://cdn.ethers.io/lib/ethers-5.2.umd.min.js" type="application/javascript"></script>
+</head>
+<body>
+    <h1>Blind Auction</h1>
+    <div>
+        <h2>Place Bid</h2>
+        <input type="number" id="bidAmount" placeholder="Enter bid amount in ETH" />
+        <input type="text" id="secret" placeholder="Enter a secret phrase" />
+        <button onclick="placeBid()">Place Bid</button>
+    </div>
+    <div>
+        <h2>Reveal Bid</h2>
+        <input type="number" id="revealBidAmount" placeholder="Enter your bid amount" />
+        <input type="text" id="revealSecret" placeholder="Enter your secret phrase" />
+        <button onclick="revealBid()">Reveal Bid</button>
+    </div>
+    <div>
+        <h2>Withdraw</h2>
+        <button onclick="withdraw()">Withdraw Funds</button>
+    </div>
+</body>
+</html>
