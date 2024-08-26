@@ -7,26 +7,6 @@ const factoryContractAddress = "0xB88580BF602233b692f5f5bC0305c8b5c5B07325";
 const auctionFactoryAbiPath = '../artifacts/contracts/AuctionFactory.sol/AuctionFactory.json';
 const auctionAbiPath = '../artifacts/contracts/Auction.sol/Auction.json';
 
-// fetch(auctionFactoryAbiPath)
-//     .then(response => response.json())
-//     .then(data => {
-//         const abi = data.abi;
-//         const contractAddress = 'YOUR_CONTRACT_ADDRESS'; // Replace with the actual contract address
-//         auctionFactoryContract = new web3.eth.Contract(abi, contractAddress);
-//         console.log(auctionFactoryContract); // You can now interact with the contract
-//     })
-//     .catch(error => console.error('Error loading the ABI:', error));
-
-// fetch(auctionAbiPath)
-//     .then(response => response.json())
-//     .then(data => {
-//         const abi = data.abi;
-//         const contractAddress = 'YOUR_CONTRACT_ADDRESS'; // Replace with the actual contract address
-//         auctionContract = new web3.eth.Contract(abi, contractAddress);
-//         console.log(auctionContract); // You can now interact with the contract
-//     })
-//     .catch(error => console.error('Error loading the ABI:', error));
-
 document.addEventListener('DOMContentLoaded', () => {
     const connectButton = document.getElementById('connect-wallet');
     const walletAddressDisplay = document.getElementById('wallet-address');
@@ -45,12 +25,11 @@ document.addEventListener('DOMContentLoaded', () => {
                     .then(response => response.json())
                     .then(data => {
                         const abi = data.abi;
-                        const contractAddress = factoryContractAddress; // Replace with the actual contract address
-                        auctionFactoryContract = new web3.eth.Contract(abi, contractAddress);
+                        auctionFactoryContract = new web3.eth.Contract(abi, factoryContractAddress);
                         console.log(auctionFactoryContract); // You can now interact with the contract
                     })
                     .catch(error => console.error('Error loading the ABI:', error));
-                    
+
                 // Show controls after connection
                 auctionControls.style.display = 'block';
                 auctionList.style.display = 'block';
@@ -65,12 +44,21 @@ document.addEventListener('DOMContentLoaded', () => {
 
     async function loadAuctions() {
         try {
-            const auctionCount = await auctionFactoryContract.methods.getAuctionCount().call();
+            const auctionCount = await auctionFactoryContract.methods.getAllAuctions().call();
+            console.log(auctionCount);
             const auctionSelect = document.getElementById('auction-select');
             auctionSelect.innerHTML = "";
             for (let i = 0; i < auctionCount; i++) {
                 const auctionAddress = await auctionFactoryContract.methods.auctions(i).call();
-                const auctionContract = new web3.eth.Contract(auctionABI, auctionAddress);
+                fetch(auctionAbiPath)
+                    .then(response => response.json())
+                    .then(data => {
+                        const abi = data.abi;
+                        auctionContract = new web3.eth.Contract(abi, auctionAddress);
+                        console.log(auctionContract); // You can now interact with the contract
+                    })
+                    .catch(error => console.error('Error loading the ABI:', error));
+                // const auctionContract = new web3.eth.Contract(auctionABI, auctionAddress);
                 const auctionDetails = await auctionContract.methods.getAuctionDetails().call();
 
                 const option = document.createElement('option');
