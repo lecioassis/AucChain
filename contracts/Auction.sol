@@ -1,15 +1,14 @@
 // SPDX-License-Identifier: GPL-3.0
-pragma solidity ^0.8.26;
+pragma solidity ^0.8.19;
 
-contract BlindAuction {
+contract Auction {
     // Static state variables
     address public immutable owner;
     uint public immutable startBlock;
     uint public immutable endBlock;
+    uint public immutable revealEndBlock;
     string public ipfsHash;
-    uint public immutable bidIncrement;
-    uint public revealEndBlock;
-
+    
     // Struct to store bid details
     struct Bid {
         bytes32 blindedBid;
@@ -22,8 +21,8 @@ contract BlindAuction {
     mapping(address => Bid) public bids;
     mapping(address => uint256) public fundsByBidder;
     uint public highestBindingBid;
-    bool public ownerHasWithdrawn;
     bool public winnerHasClaimed;
+    bool public ownerHasWithdrawn;
 
     event LogBid(address indexed bidder, uint deposit, bytes32 blindedBid);
     event LogReveal(address indexed bidder, uint value);
@@ -31,8 +30,6 @@ contract BlindAuction {
     event LogCanceled();
 
     constructor(
-        address _owner,
-        uint _bidIncrement,
         uint _startBlock,
         uint _endBlock,
         uint _revealEndBlock,
@@ -40,11 +37,9 @@ contract BlindAuction {
     ) {
         require(_startBlock < _endBlock, "Ending Block must be greater than Starting Block.");
         require(_startBlock >= block.number, "Starting Block must be greater or equal to the Current Block number.");
-        require(_owner != address(0), "Owner address cannot be zero address.");
         require(_endBlock < _revealEndBlock, "Reveal end block must be after auction end.");
 
-        owner = _owner;
-        bidIncrement = _bidIncrement;
+        owner = msg.sender;
         startBlock = _startBlock;
         endBlock = _endBlock;
         revealEndBlock = _revealEndBlock;
@@ -114,6 +109,18 @@ contract BlindAuction {
 
         emit LogWithdrawal(msg.sender, withdrawalAmount);
         return true;
+    }
+
+    function finalizeAuction() external onlyOwner onlyWinner onlyAfterEnd onlyNotCanceled {
+        require(winnerHasClaimed, "Winner must confirm receipt of the item.");
+
+        uint fee = highestBindingBid / 100; // 1% fee for contract deployer
+        uint payout = highestBindingBid - fee;
+
+        (bool transferSuccess, ) = payable(owner).call{value: payout}("");
+        require(transferSuccess, "Payout transfer failed.");
+
+        ownerHasWithdrawn = true;
     }
 
     function cancelAuction() public onlyOwner onlyBeforeEnd onlyNotCanceled returns (bool) {

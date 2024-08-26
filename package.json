@@ -1,0 +1,21 @@
+{
+  "name": "aucchain",
+  "version": "1.0.0",
+  "description": "Sealed Auction Platform on the Ethereum Network\r ![Business Model Canvas](https://raw.githubusercontent.com/lecioassis/AucChain/main/business-model-canvas.png)",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@nomiclabs/hardhat-ethers": "^2.2.3",
+    "@nomiclabs/hardhat-waffle": "^2.0.6",
+    "ethers": "^5.7.2",
+    "hardhat": "^2.22.9"
+  },
+  "dependencies": {
+    "web3": "^4.12.1"
+  }
+}

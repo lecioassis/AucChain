@@ -3,11 +3,49 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Blind Auction DApp</title>
-    <script src="https://cdn.ethers.io/lib/ethers-5.2.umd.min.js" type="application/javascript"></script>
+<<<<<<< HEAD
+    <title>Blind Auction Dapp</title>
+    <link rel="stylesheet" href="./css/styles.css">
+    <link rel="shortcut icon" href="#">
 </head>
 <body>
-    <h1>Blind Auction</h1>
+    <div class="container">
+        <h1>Blind Auction Dapp</h1>
+        
+        <!-- Metamask Connection -->
+        <div id="wallet-connect">
+            <button id="connect-wallet">Connect Wallet</button>
+            <p id="walletAddress" style="display: none;"></p>
+        </div>
+
+        <!-- Auction Interaction Section -->
+        <div id="auction-options" style="display: none;">
+            <h2>Auction Options</h2>
+            <button id="createAuctionBtn">Create New Auction</button>
+
+            <h3>Select an Auction to Interact</h3>
+            <select id="auctionList">
+                <option value="">Select Auction</option>
+                <!-- Dynamically populated list of auctions -->
+            </select>
+        </div>
+
+        <!-- Auction Actions -->
+        <div id="auction-actions" style="display: none;">
+            <h3>Auction Actions</h3>
+            <button id="placeBidBtn">Place Bid</button>
+            <button id="revealBidBtn">Reveal Bid</button>
+            <button id="withdrawBtn">Withdraw</button>
+            <button id="confirmReceiptBtn">Confirm Receipt</button>
+        </div>
+
+=======
+    <title>Blind Auction DApp</title>
+    <script src="https://cdn.ethers.io/lib/ethers-5.2.umd.min.js" type="application/javascript"></script>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="logo">AUC <span class="highlight">Chain</span></div> <!-- Texto estilizado como logo -->
     <div>
         <h2>Place Bid</h2>
         <input type="number" id="bidAmount" placeholder="Enter bid amount in ETH" />
@@ -23,6 +61,8 @@
     <div>
         <h2>Withdraw</h2>
         <button onclick="withdraw()">Withdraw Funds</button>
+>>>>>>> 1d746d77513d9880cfea5e39c712bb655d190e54
     </div>
+    <script src="./js/main.js"></script>
 </body>
 </html>
