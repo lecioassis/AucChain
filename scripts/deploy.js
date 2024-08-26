@@ -21,20 +21,20 @@ async function main() {
     // Example of parameters, replace these with your own
     // const owner = deployer.address;
     // const bidIncrement = ethers.utils.parseUnits("0.1", "ether"); // Example increment
-    const startBlock = 10000000; // Example block number
-    const endBlock = startBlock + 1000; // Example end block
-    const revealEndBlock = endBlock + 1000; // Example reveal end block
-    const ipfsHash = "Qm..."; // Example IPFS hash
+    // const startBlock = 10000000; // Example block number
+    // const endBlock = startBlock + 1000; // Example end block
+    // const revealEndBlock = endBlock + 1000; // Example reveal end block
+    // const ipfsHash = "Qm..."; // Example IPFS hash
 
-    const Auction = await ethers.getContractFactory("Auction");
-    const auction = await Auction.deploy(
-        startBlock,
-        endBlock,
-        revealEndBlock,
-        ipfsHash
-    );
+    // const Auction = await ethers.getContractFactory("Auction");
+    // const auction = await Auction.deploy(
+    //     startBlock,
+    //     endBlock,
+    //     revealEndBlock,
+    //     ipfsHash
+    // );
 
-    console.log("Auction deployed to:", auction.address);
+    // console.log("Auction deployed to:", auction.address);
 }
 
 main()

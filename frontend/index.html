@@ -4,28 +4,54 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Blind Auction DApp</title>
-    <script src="https://cdn.ethers.io/lib/ethers-5.2.umd.min.js" type="application/javascript"></script>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="./css/styles.css">
 </head>
 <body>
-    <div class="logo">AUC <span class="highlight">Chain</span></div> <!-- Texto estilizado como logo -->
-    <div>
-        <h2>Place Bid</h2>
-        <input type="number" id="bidAmount" placeholder="Enter bid amount in ETH" />
-        <input type="text" id="secret" placeholder="Enter a secret phrase" />
-        <button onclick="placeBid()">Place Bid</button>
-    </div>
-    <div>
-        <h2>Reveal Bid</h2>
-        <input type="number" id="revealBidAmount" placeholder="Enter your bid amount" />
-        <input type="text" id="revealSecret" placeholder="Enter your secret phrase" />
-        <button onclick="revealBid()">Reveal Bid</button>
-    </div>
-    <div>
-        <h2>Withdraw</h2>
-        <button onclick="withdraw()">Withdraw Funds</button>
->>>>>>> 1d746d77513d9880cfea5e39c712bb655d190e54
-    </div>
+    <header>
+        <h1>Blind Auction DApp</h1>
+        <button id="connect-wallet">Connect Wallet</button>
+        <div id="wallet-address"></div>
+    </header>
+
+    <main>
+        <section id="auction-controls" style="display: none;">
+            <h2>Create New Auction</h2>
+            <label for="ipfs-hash">IPFS Hash:</label>
+            <input type="text" id="ipfs-hash" placeholder="Enter IPFS Hash">
+            <label for="start-block">Start Block:</label>
+            <input type="number" id="start-block" placeholder="Enter Start Block">
+            <label for="end-block">End Block:</label>
+            <input type="number" id="end-block" placeholder="Enter End Block">
+            <label for="reveal-end-block">Reveal End Block:</label>
+            <input type="number" id="reveal-end-block" placeholder="Enter Reveal End Block">
+            <button id="create-auction">Create Auction</button>
+        </section>
+
+        <section id="auction-list" style="display: none;">
+            <h2>Active Auctions</h2>
+            <select id="auction-select"></select>
+            <button id="interact-auction">Interact with Auction</button>
+        </section>
+
+        <section id="auction-interaction" style="display: none;">
+            <h2>Auction Interaction</h2>
+            <div id="auction-details"></div>
+            <label for="blinded-bid">Blinded Bid (in Wei):</label>
+            <input type="text" id="blinded-bid" placeholder="Enter Blinded Bid">
+            <label for="secret">Secret:</label>
+            <input type="text" id="secret" placeholder="Enter Secret">
+            <button id="place-bid">Place Bid</button>
+
+            <label for="reveal-value">Reveal Value (in Wei):</label>
+            <input type="number" id="reveal-value" placeholder="Enter Reveal Value">
+            <button id="reveal-bid">Reveal Bid</button>
+
+            <button id="withdraw">Withdraw Funds</button>
+            <button id="confirm-item">Confirm Item Receipt</button>
+        </section>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/web3@latest/dist/web3.min.js"></script>
     <script src="./js/main.js"></script>
 </body>
 </html>
