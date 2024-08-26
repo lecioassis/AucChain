@@ -3,7 +3,7 @@ let account;
 let auctionFactoryContract;
 let auctionContract;
 
-const factoryContractAddress = "0xB88580BF602233b692f5f5bC0305c8b5c5B07325";
+const factoryContractAddress = "0x5FbDB2315678afecb367f032d93F642f64180aa3";
 const auctionFactoryAbiPath = '../artifacts/contracts/AuctionFactory.sol/AuctionFactory.json';
 const auctionAbiPath = '../artifacts/contracts/Auction.sol/Auction.json';
 
@@ -14,22 +14,24 @@ document.addEventListener('DOMContentLoaded', () => {
     const auctionList = document.getElementById('auction-list');
     const auctionInteraction = document.getElementById('auction-interaction');
 
+    web3 = new Web3(window.ethereum);
+
+    fetch(auctionFactoryAbiPath)
+        .then(response => response.json())
+        .then(data => {
+            const abi = data.abi;
+            auctionFactoryContract = new web3.eth.Contract(abi, factoryContractAddress);
+            console.log(auctionFactoryContract); // You can now interact with the contract
+        })
+        
+        .catch(error => console.error('Error loading the ABI:', error));
+
     connectButton.addEventListener('click', async () => {
         if (typeof window.ethereum !== 'undefined') {
             try {
                 const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
                 account = accounts[0];
                 walletAddressDisplay.innerText = `Connected: ${account}`;
-                web3 = new Web3(window.ethereum);
-                fetch(auctionFactoryAbiPath)
-                    .then(response => response.json())
-                    .then(data => {
-                        const abi = data.abi;
-                        auctionFactoryContract = new web3.eth.Contract(abi, factoryContractAddress);
-                        console.log(auctionFactoryContract); // You can now interact with the contract
-                    })
-                    .catch(error => console.error('Error loading the ABI:', error));
-
                 // Show controls after connection
                 auctionControls.style.display = 'block';
                 auctionList.style.display = 'block';
@@ -44,32 +46,29 @@ document.addEventListener('DOMContentLoaded', () => {
 
     async function loadAuctions() {
         try {
-            const auctionCount = await auctionFactoryContract.methods.getAllAuctions().call();
-            console.log(auctionCount);
+            // Fetch all auction addresses
+            const auctionAddresses = await auctionFactoryContract.methods.auctions().call();
+            console.log(auctionAddresses);
+    
+            // Get the dropdown element
             const auctionSelect = document.getElementById('auction-select');
-            auctionSelect.innerHTML = "";
-            for (let i = 0; i < auctionCount; i++) {
-                const auctionAddress = await auctionFactoryContract.methods.auctions(i).call();
-                fetch(auctionAbiPath)
-                    .then(response => response.json())
-                    .then(data => {
-                        const abi = data.abi;
-                        auctionContract = new web3.eth.Contract(abi, auctionAddress);
-                        console.log(auctionContract); // You can now interact with the contract
-                    })
-                    .catch(error => console.error('Error loading the ABI:', error));
-                // const auctionContract = new web3.eth.Contract(auctionABI, auctionAddress);
-                const auctionDetails = await auctionContract.methods.getAuctionDetails().call();
-
+            auctionSelect.innerHTML = ""; // Clear the dropdown
+    
+            // Loop through each auction address
+            for (let i = 0; i < auctionAddresses.length; i++) {
+                const auctionAddress = auctionAddresses[i];
+    
+                // Directly append auction addresses to the dropdown
                 const option = document.createElement('option');
                 option.value = auctionAddress;
-                option.text = `Auction ${i + 1}: ${auctionDetails.ipfsHash}`;
+                option.text = `Auction ${i + 1}: ${auctionAddress}`;
                 auctionSelect.appendChild(option);
             }
         } catch (error) {
             console.error("Error loading auctions:", error);
         }
     }
+    
 
     document.getElementById('create-auction').addEventListener('click', async () => {
         const ipfsHash = document.getElementById('ipfs-hash').value;
